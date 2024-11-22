@@ -37,7 +37,7 @@ export const SwipeScreen = () => {
 						<Card absH key={card.id} height={300}>
 							<Card.Image source={{ uri: card.imageUri }} height={200} />
 							<View paddingH-s2>
-								<Text text60 marginT-s3 animated>
+								<Text text60 marginT-s3>
 									{card.header}
 								</Text>
 								<Text text80 marginT-s3 ellipsizeMode="tail">

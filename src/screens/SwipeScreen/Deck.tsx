@@ -1,16 +1,29 @@
-import { useEffect, useRef } from 'react';
+import { SwipeCardData } from '@/utils';
+import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import {
 	Animated,
-	Dimensions,
-	LayoutAnimation,
-	PanResponder,
 	Platform,
 	UIManager,
+	Dimensions,
+	PanResponder,
+	LayoutAnimation,
 } from 'react-native';
 
 const animationTimings = {
 	short: 250,
 };
+
+type DeckProps = {
+	index: number;
+	data: SwipeCardData[];
+	onSwipeLeft?: () => void;
+	onSwipeRight?: () => void;
+	renderNoMoreCards: () => JSX.Element;
+	renderCard: (item: SwipeCardData) => JSX.Element;
+	setIndex: Dispatch<SetStateAction<DeckProps['index']>>;
+};
+
+type SwipeDirection = 'left' | 'right';
 
 const Deck = ({
 	data,
@@ -20,7 +33,7 @@ const Deck = ({
 	onSwipeLeft = () => {},
 	onSwipeRight = () => {},
 	renderNoMoreCards,
-}) => {
+}: DeckProps) => {
 	const pan = useRef(new Animated.ValueXY()).current;
 	const windowWidth = Dimensions.get('window').width;
 	const swipeThreshold = windowWidth * 0.25;
@@ -44,13 +57,13 @@ const Deck = ({
 			useNativeDriver: true,
 		}).start();
 
-	const onSwipeComplete = (direction) => {
+	const onSwipeComplete = (direction: SwipeDirection) => {
 		direction === 'right' ? onSwipeRight() : onSwipeLeft();
 		pan.setValue({ x: 0, y: 0 });
 		setIndex((i) => i + 1);
 	};
 
-	const forceSwipe = (direction) => {
+	const forceSwipe = (direction: SwipeDirection) => {
 		const x = direction === 'right' ? windowWidth : -windowWidth;
 
 		Animated.timing(pan, {

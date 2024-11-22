@@ -1,7 +1,14 @@
 import { faker } from '@faker-js/faker';
 
+export type SwipeCardData = {
+	id: number;
+	body: string;
+	header: string;
+	imageUri: string;
+};
+
 export const generateSwipeCardData = (numberOfCards = 3) => {
-	const data = [];
+	const data: SwipeCardData[] = [];
 
 	for (let i = 0; i < numberOfCards; i++) {
 		const id = i + 1;
